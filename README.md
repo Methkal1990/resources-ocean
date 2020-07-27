@@ -1,5 +1,5 @@
 # resources-ocean
-A Nodejs rest api app that provides an interface to CRUD tech resources with from scratch authentication implementation for users
+A Nodejs rest api app that provides an interface to CRUD tech resources with authentication implementation for users and built from scratch.
 
 # Stack Used:
 
