@@ -1,4 +1,5 @@
 const resources = require("./routes/resources");
+const debug = require("debug")("app:debugger");
 const express = require("express");
 const helmet = require("helmet");
 const morgan = require("morgan");
@@ -7,11 +8,15 @@ const app = express();
 
 // parse the request for json payload --> node doesn't understand json payload if you don't use this middleware
 app.use(express.json());
-// Helmet helps you secure your Express apps by setting various HTTP headers. 
+// Helmet helps you secure your Express apps by setting various HTTP headers.
 app.use(helmet());
 
 // example using the configuration files with config module
-console.log(`current NODE_ENV is **${app.get("env")}** and current environment name is --> **${config.get("name")}**`);
+debug(
+  `current NODE_ENV is **${app.get(
+    "env",
+  )}** and current environment name is --> **${config.get("name")}**`,
+);
 
 // if production env then apply these middlewares
 if (app.get("env") === "production") {
@@ -24,4 +29,4 @@ app.use("/api/resources", resources);
 const port = process.env.PORT || 3000;
 
 // start the app on the port specified in PORT or use 3000
-app.listen(port, () => console.log(`Listening on port ${port}`));
+app.listen(port, () => debug(`Listening on port ${port}`));
