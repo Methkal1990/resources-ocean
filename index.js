@@ -4,7 +4,17 @@ const express = require("express");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const config = require("config");
+const mongoose = require("mongoose");
 const app = express();
+
+// connect to mongodb
+mongoose
+  .connect("mongodb://localhost/resources-ocean", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => debug("Connected to mongodb"))
+  .catch((err) => debug(err.message));
 
 // parse the request for json payload --> node doesn't understand json payload if you don't use this middleware
 app.use(express.json());
