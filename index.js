@@ -1,5 +1,8 @@
 const resources = require("./routes/resources");
+const users = require("./routes/users");
 const debug = require("debug")("app:debugger");
+const Joi = require("@hapi/joi");
+Joi.objectId = require("joi-objectid")(Joi);
 const express = require("express");
 const helmet = require("helmet");
 const morgan = require("morgan");
@@ -34,6 +37,8 @@ if (app.get("env") === "production") {
 }
 // use the router "resources" for any request that goes to /api/resources
 app.use("/api/resources", resources);
+// use the router "users" for any request that goes to /api/users
+app.use("/api/users", users);
 
 // use the port defined in the environment variables otherwise use the 3000 port
 const port = process.env.PORT || 3000;
