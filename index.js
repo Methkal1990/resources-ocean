@@ -1,5 +1,6 @@
 const resources = require("./routes/resources");
 const users = require("./routes/users");
+const auth = require("./routes/auth");
 const debug = require("debug")("app:debugger");
 const Joi = require("@hapi/joi");
 Joi.objectId = require("joi-objectid")(Joi);
@@ -9,6 +10,11 @@ const morgan = require("morgan");
 const config = require("config");
 const mongoose = require("mongoose");
 const app = express();
+
+if (!config.get("jwtPrivateKey")) {
+  console.log("FATAL: jwtPrivateKey is missing");
+  process.exit(1);
+}
 
 // connect to mongodb
 mongoose
@@ -39,6 +45,8 @@ if (app.get("env") === "production") {
 app.use("/api/resources", resources);
 // use the router "users" for any request that goes to /api/users
 app.use("/api/users", users);
+// use the router "auth" for any request that goes to /api/auth
+app.use("/api/auth", auth);
 
 // use the port defined in the environment variables otherwise use the 3000 port
 const port = process.env.PORT || 3000;

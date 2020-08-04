@@ -3,6 +3,8 @@ const router = express.Router();
 const debug = require("debug")("app:debugger");
 const { Resource, validate } = require("../models/resource");
 const { User } = require("../models/user");
+const auth = require("../middlewares/auth");
+const admin = require("../middlewares/admin");
 
 router.get("/", async (req, res) => {
   // get the resources from mongodb sorted by descending date
@@ -62,7 +64,7 @@ router.put("/:id", async (req, res) => {
   res.send(resource);
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", [auth, admin], async (req, res) => {
   // remove the resource
   const resource = await Resource.findByIdAndRemove(req.params.id);
   if (!resource) return res.status(404).send("Resource not found");
